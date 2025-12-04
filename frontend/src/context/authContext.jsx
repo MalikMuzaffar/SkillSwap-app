@@ -3,9 +3,9 @@ import { io} from 'socket.io-client';
 
 import axios from 'axios';
 
-axios.defaults.baseURL = 'https://skillswap-backend-ta8t.onrender.com';
+axios.defaults.baseURL = import.meta.env.VITE_BACKEND_URI;
 
-export const socket = io("https://skillswap-backend-ta8t.onrender.com");
+export const socket = io(import.meta.env.VITE_SOCKET_URI);
 
 // Create the AuthContext
 export const AuthContext = createContext();
