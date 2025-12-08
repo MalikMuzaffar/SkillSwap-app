@@ -63,7 +63,7 @@ jobs:
               run: docker build -t muzaffaribrar/fyp-backend:$BUILD_NUMBER -t muzaffaribrar/fyp-backend:latest .
 
             - name: scanning image by trivy
-              uses: aquasecurity/action-trivy@master
+              uses: aquasecurity/trivy-action@master
               with:
                 scan-type: image
                 image-ref: muzaffaribrar/fyp-backend:$BUILD_NUMBER
