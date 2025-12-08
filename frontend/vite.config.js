@@ -1,3 +1,38 @@
+import { defineConfig, loadEnv } from 'vite'
+import tailwindcss from '@tailwindcss/vite'
+import react from '@vitejs/plugin-react'
+
+export default defineConfig(({ mode }) => {
+  // Load env variables based on mode (development/production)
+  const env = loadEnv(mode, process.cwd(), '')
+
+  return {
+    plugins: [
+     tailwindcss(),
+     react()
+   ],
+    server: {
+      proxy: {
+        '/users': {
+          target: env.VITE_BACKEND_URL, // from .env
+          changeOrigin: true,
+          secure: false,
+        },
+        '/socket.io': {
+          target: env.VITE_SOCKET_URL, // from .env
+          ws: true,
+          changeOrigin: true,
+        },
+      },
+    },
+  }
+})
+
+
+
+
+
+
 ////////////////                  OLD  ORIGINNAL CODE                /////////////////////////
 
 // import { defineConfig } from 'vite'
@@ -13,29 +48,29 @@
 
 ////////////////////////         NEW GPT CODE               //////////////////////////////
 
-import { defineConfig } from 'vite'
-import tailwindcss from '@tailwindcss/vite'
-import react from '@vitejs/plugin-react'
+// import { defineConfig } from 'vite'
+// import tailwindcss from '@tailwindcss/vite'
+// import react from '@vitejs/plugin-react'
 
-export default defineConfig({
-  plugins: [
-    tailwindcss(),
-    react()
-  ],
-  server: {
-    proxy: {
-      '/users': {
-        target: 'http://18.118.212.240:8000', // Your backend server
-        changeOrigin: true,
-        secure: false,
-      },
-      '/socket.io': {
-        target: 'http://18.118.212.240:3000', // Proxy Socket.IO if needed
-        ws: true, // enable websocket proxy
-      }
-    }
-  }
-})
+// export default defineConfig({
+//   plugins: [
+//     tailwindcss(),
+//     react()
+//   ],
+//   server: {
+//     proxy: {
+//       '/users': {
+//         target: 'http://18.118.212.240:8000', // Your backend server
+//         changeOrigin: true,
+//         secure: false,
+//       },
+//       '/socket.io': {
+//         target: 'http://18.118.212.240:3000', // Proxy Socket.IO if needed
+//         ws: true, // enable websocket proxy
+//       }
+//     }
+//   }
+// })
 
 
 

@@ -13,14 +13,27 @@ import adminRouter from './Routes/admin.routes.js'
 import reportRouter from './Routes/report.routes.js'
 import notificationRouter from './Routes/notification.routes.js'
 // Load environment variables
+// dotenv.config({ path: "./.env" });
+
+// const app = express();
+
+
+// const allowedOrigins = 'http://18.118.212.240:5173'; // Frontend URL
+
+// // Middleware
+// app.use(cors({
+//   origin: allowedOrigins,
+//   credentials: true,
+// }));
+
+// Load environment variables
 dotenv.config({ path: "./.env" });
 
 const app = express();
 
+// Use FRONTEND_URL from .env
+const allowedOrigins = process.env.FRONTEND_URL;
 
-const allowedOrigins = 'http://18.118.212.240:5173'; // Frontend URL
-
-// Middleware
 app.use(cors({
   origin: allowedOrigins,
   credentials: true,
