@@ -45,7 +45,7 @@ jobs:
               uses: aquasecurity/trivy-action@master
               with:
                 scan-type: image
-                image-ref: muzaffaribrar/fyp-frontend:$BUILD_NUMBER
+                image-ref: muzaffaribrar/fyp-frontend:${{ env.BUILD_NUMBER }}
                 security-checks: secrets
                 exit-code: 0
                 
@@ -66,7 +66,7 @@ jobs:
               uses: aquasecurity/trivy-action@master
               with:
                 scan-type: image
-                image-ref: muzaffaribrar/fyp-backend:$BUILD_NUMBER
+                image-ref: muzaffaribrar/fyp-backend:${{ env.BUILD_NUMBER }}
                 security-checks: secrets
                 exit-code: 0
 
