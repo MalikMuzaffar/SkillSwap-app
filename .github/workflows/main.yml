@@ -39,11 +39,7 @@ jobs:
 
               # build and scan frontend docker image
             - name: build frontend docker image
-              env:
-                DOCKER_USERNAME: ${{secrets.DOCKER_USERNAME}}
-                DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
-
-              run: docker build -t muzaffaribrar/fyp-frontend:$BUILD_NUMBER -t muzaffaribrar/fyp-frontend:latest .
+              run: docker build -t muzaffaribrar/fyp-frontend:$BUILD_NUMBER -t muzaffaribrar/fyp-frontend:latest ./frontend
 
             - name: scanning frontend image 
               uses: aquasecurity/trivy-action@master
@@ -64,11 +60,7 @@ jobs:
 
             # build and scanning backend image
             - name: build backend image
-              env:
-                DOCKER_USERNAME: ${{secrets.DOCKER_USERNAME}}
-                DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
-                
-              run: docker build -t muzaffaribrar/fyp-backend:$BUILD_NUMBER -t muzaffaribrar/fyp-backend:latest .
+              run: docker build -t muzaffaribrar/fyp-backend:$BUILD_NUMBER -t muzaffaribrar/fyp-backend:latest ./backend
 
             - name: scanning image by trivy
               uses: aquasecurity/trivy-action@master
