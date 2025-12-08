@@ -152,3 +152,123 @@ socket.on('upload', async (data) => {
 });
 
 server.listen(3000)
+
+
+
+/////////////////////////////          NEW   GPT   VERSION             /////////////////////////////////////
+
+// import dotenv from 'dotenv'
+// import { Server } from "socket.io";
+// import http from 'http'
+// import express from 'express'
+// import DbConn from './db/DbConn.js';
+// import path from 'path';
+// import fs from 'fs'
+// import User from './Models/user.model.js';
+// import { Message } from "./Models/message.js";
+// import { Room } from "./Models/room.js";
+// import { uploadCloudinary } from './utils/cloudinary.js';
+
+// dotenv.config({ path: "./.env" });
+
+// DbConn();
+
+// const app = express();
+// const server = http.createServer(app);
+
+// const io = new Server(server, {
+//   cors: {
+//     origin: process.env.FRONTEND_URL,
+//     credentials: true,
+//   },
+// });
+
+// const userSocketMap = new Map();
+
+// io.on("connection", (socket) => {
+//   console.log("🟢 New connection:", socket.id);
+
+//   socket.on("register-user", (userId) => {
+//     userSocketMap.set(userId, socket.id);
+//     console.log(`User ${userId} registered with socket: ${socket.id}`);
+//   });
+
+//   socket.on("create-room", async ({ skillId }) => {
+//     try {
+//       let room = await Room.findOne({ skillId });
+
+//       if (!room) {
+//         room = await Room.create({ skillId });
+//       }
+
+//       socket.join(room._id.toString());
+//       socket.emit("room-created", { room });
+//     } catch (err) {
+//       console.error("❌ create-room error:", err.message);
+//     }
+//   });
+
+//   socket.on("join-room", (roomId) => {
+//     socket.join(roomId);
+//   });
+
+//   socket.on("send-group-message", async ({ roomId, senderId, text }) => {
+//     try {
+//       const newMessage = await Message.create({
+//         RoomId: roomId,
+//         senderId,
+//         text
+//       });
+
+//       const saved = await newMessage.populate("senderId");
+
+//       io.to(roomId).emit("receive-group-message", saved);
+//     } catch (err) {
+//       console.error("❌ send-group-message error:", err.message);
+//     }
+//   });
+
+//   socket.on('upload', async (data) => {
+//     try {
+//       const { buffer, fileName, roomId, senderId } = data;
+
+//       const tempPath = path.join('public', `${Date.now()}-${fileName}`);
+//       fs.writeFileSync(tempPath, Buffer.from(buffer));
+
+//       const uploadResult = await uploadCloudinary(tempPath);
+
+//       if (fs.existsSync(tempPath)) fs.unlinkSync(tempPath);
+
+//       await Message.create({
+//         RoomId: roomId,
+//         senderId,
+//         text: uploadResult.secure_url,
+//         fileName: uploadResult.original_filename,
+//         fileUrl: uploadResult.secure_url,
+//         isFile: true
+//       });
+
+//       io.to(roomId).emit("uploaded-success", true);
+//     } catch (err) {
+//       console.error("❌ upload error:", err.message);
+//     }
+//   });
+
+//   socket.on("disconnect", () => {
+//     console.log("🔴 Disconnected:", socket.id);
+
+//     for (const [userId, socketId] of userSocketMap.entries()) {
+//       if (socketId === socket.id) {
+//         userSocketMap.delete(userId);
+//         break;
+//       }
+//     }
+//   });
+// });
+
+// // IMPORTANT: Public port
+// const PORT = process.env.PORT || 8000;
+
+// server.listen(PORT, "0.0.0.0", () => {
+//   console.log(`🟢 Socket server running on port ${PORT}`);
+// });
