@@ -7,7 +7,7 @@ services:
       - "5173:80"
     depends_on:
       - backend
-    .env_file:
+    env_file:
       - /frontend/.env
     restart: unless-stopped
 
