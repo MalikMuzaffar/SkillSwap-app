@@ -25,12 +25,12 @@ export default defineConfig({
   server: {
     proxy: {
       '/users': {
-        target: 'http://localhost:8000', // Your backend server
+        target: 'http://18.118.212.240:8000', // Your backend server
         changeOrigin: true,
         secure: false,
       },
       '/socket.io': {
-        target: 'http://localhost:3000', // Proxy Socket.IO if needed
+        target: 'http://18.118.212.240:3000', // Proxy Socket.IO if needed
         ws: true, // enable websocket proxy
       }
     }

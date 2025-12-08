@@ -18,7 +18,7 @@ dotenv.config({ path: "./.env" });
 const app = express();
 
 
-const allowedOrigins = 'http://localhost:5173'; // Frontend URL
+const allowedOrigins = 'http://18.118.212.240:5173'; // Frontend URL
 
 // Middleware
 app.use(cors({
