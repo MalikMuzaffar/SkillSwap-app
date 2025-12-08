@@ -114,9 +114,12 @@ jobs:
                 chmod 600 frontend/.env
 
                 cat <<EOF > backend/.env
+                PORT=8000
                 MONGO_URI=${MONGO_URI}
                 ACCESS_TOKEN=${ACCESS_TOKEN}
+                ACCESS_TOKEN_EXPIRY=5h
                 REFRESH_TOKEN=${REFRESH_TOKEN}
+                REFRESH_TOKEN_EXPIRY=12h
                 CLOUDINARY_NAME=${CLOUDINARY_NAME}
                 CLOUDINARY_KEY=${CLOUDINARY_KEY}
                 CLOUDINARY_SECRET=${CLOUDINARY_SECRET}
