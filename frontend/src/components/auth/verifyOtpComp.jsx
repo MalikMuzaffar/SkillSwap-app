@@ -1,3 +1,5 @@
+
+import axios from 'axios';
 import React, { useState, useContext } from 'react';
 import OtpInput from 'react-otp-input';
 import { AuthContext} from '../../context/authContext';

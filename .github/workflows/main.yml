@@ -1,0 +1,137 @@
+name: CI/CD for my FYP
+
+on:
+    push:
+        branches:
+            - main
+env:
+    BUILD_NUMBER: ${{github.run_number}}
+
+jobs:
+    build-and-deploy:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: checkout the repositories
+              uses: actions/checkout@v3
+              with:
+                fetch-depth: 0
+            - name: setup node
+              uses: actions/setup-node@v3
+              with:
+                node-versio: 24
+
+            - name: install frotend dependencies
+              working-directory: ./frontend
+              run: npm install 
+
+            - name: install backend dependencies
+              working-directory: ./backend
+              run: npm install 
+
+              # Trivy check the repo for vulnerabilities
+            - name: scanning repo
+              uses: aquasecurity/trivy-action@master
+              with:
+                scan-type: repo
+                security-checks: secrets
+                exit-code: 0
+
+              # build and scan frontend docker image
+            - name: build frontend docker image
+              run: docker build -t muzaffaribrar/fyp-frontend:$BUILD_NUMBER -t muzaffaribrar/fyp-frontend:latest .
+
+            - name: scanning frontend image 
+              uses: aquasecurity/trivy-action@master
+              with:
+                scan-type: image
+                image-ref: muzaffaribrar/fyp-frontend:$BUILD_NUMBER
+                security-checks: secrets
+                exit-code: 0
+                
+            # push to docker hub
+            - name: Push frontend image to docker hub
+              env:
+                DOCKER_USERNAME: ${{secrets.DOCKER_USERNAME}}
+                DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
+              run: |
+                echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin 
+                docker push muzaffaribrar/fyp-frontend:$BUILD_NUMBER
+
+            # build and scanning backend image
+            - name: build backend image
+              run: docker build -t muzaffaribrar/fyp-backend:$BUILD_NUMBER -t muzaffaribrar/fyp-backend:latest .
+
+            - name: scanning image by trivy
+              uses: aquasecurity/action-trivy@master
+              with:
+                scan-type: image
+                image-ref: muzaffaribrar/fyp-backend:$BUILD_NUMBER
+                security-checks: secrets
+                exit-code: 0
+
+            # push image to docker hub
+            - name: push backend image to docker hub
+              env:
+                DOCKER_USERNAME: ${{secrets.DOCKER_USERNAME}}
+                DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
+              run: |
+                echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+                docker push muzaffaribrar/fyp-backend:$BUILD_NUMBER
+
+            # Pull and Deploy on EC2
+            - name: Pull images from docker hub and deploy on ec2
+              env:
+                VITE_BACKEND_URI: "http://${{secrets.EC2_IP}}:8000"
+                VITE_SOCKET_URI: "http://${{secrets.EC2_IP}}:3000"
+                MONGO_URI: ${{secrets.MONGO_URI}}
+                ACCESS_TOKEN: ${{secrets.ACCESS_TOKEN}}
+                REFRESH_TOKEN: ${{secrets.REFRESH_TOKEN}}
+                CLOUDINARY_NAME: ${{secrets.CLOUDINARY_NAME}}
+                CLOUDINARY_KEY: ${{secrets.CLOUDINARY_KEY}}
+                CLOUDINARY_SECRET: ${{secrets.CLOUDINARY_SECRET}}
+                SMTP_USER: ${{secrets.SMTP_USER}}
+                SMTP_PASS: ${{secrets.SMTP_PASS}}
+                FRONTEND_URL: "http://${{secrets.EC2_IP}}:5173"
+                EC2_IP: ${{secrets.EC2_IP}}
+              run: |
+                echo "${{secrets.KEY_PEM}}" > key.pem
+                chmod 600 key.pem
+                
+
+                # ssh and copy docker compose to ec2 
+                scp -o StrictHostKeyChecking=no -i key.pem ./docker-compose.yml ubuntu@"$EC2_IP":/home/ubuntu/FYP/docker-compose.yml
+
+                ssh -o StrictHostKeychecking=no -i key.pem ubuntu@"$EC2_IP" << EOF
+
+                # inside the FYP place env
+                cd /home/ubuntu/FYP
+
+                cat <<EOF > frontend/.env
+                VITE_BACKEND_URI=${VITE_BACKEND_URI}
+                VITE_SOCKET_URI=${VITE_SOCKET_URI}
+                EOF
+                chmod 600 frontend/.env
+
+                cat <<EOF > backend/.env
+                MONGO_URI=${MONGO_URI}
+                ACCESS_TOKEN=${ACCESS_TOKEN}
+                REFRESH_TOKEN=${REFRESH_TOKEN}
+                CLOUDINARY_NAME=${CLOUDINARY_NAME}
+                CLOUDINARY_KEY=${CLOUDINARY_KEY}
+                CLOUDINARY_SECRET=${CLOUDINARY_SECRET}
+                SMTP_USER=${SMTP_USER}
+                SMTP_PASS=${SMTP_PASS}
+                FRONTEND_URL=${FRONTEND_URL}
+                EOF
+                chmod 600 backend/.env
+
+                # pull image and up the containers
+                docker-compose pull
+                docker-compose down
+                docker-compose up -d
+                
+                EOF
+
+
+
