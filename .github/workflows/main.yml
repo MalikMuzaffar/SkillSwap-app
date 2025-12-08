@@ -184,6 +184,9 @@ jobs:
                 # inside the FYP place env
                 cd /home/ubuntu/FYP
 
+                # login to docker hub so pull works
+                echo "$DOCKERHUB_PASSWORD" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
+                
                 # pull image and up the containers
                 docker-compose pull
                 docker-compose down
