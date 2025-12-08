@@ -84,6 +84,9 @@ jobs:
             # Pull and Deploy on EC2
             - name: Pull images from docker hub and deploy on ec2
               env:
+                env:
+                DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+                DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
                 VITE_BACKEND_URI: "http://${{secrets.EC2_IP}}:8000"
                 VITE_SOCKET_URI: "http://${{secrets.EC2_IP}}:3000"
                 MONGO_URI: ${{secrets.MONGO_URI}}
@@ -187,7 +190,7 @@ jobs:
                 cd /home/ubuntu/FYP
 
                 # login to docker hub so pull works
-                echo "$DOCKERHUB_PASSWORD" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
+                echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
 
                 # pull image and up the containers
                 docker-compose pull
