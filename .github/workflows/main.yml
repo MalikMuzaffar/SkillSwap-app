@@ -88,7 +88,7 @@ jobs:
                 DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
                 DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
                 VITE_BACKEND_URI: "http://${{secrets.EC2_IP}}:8000"
-                VITE_SOCKET_URI: "http://${{secrets.EC2_IP}}:3000"
+                VITE_SOCKET_URI: "http://${{secrets.EC2_IP}}:8000"
                 MONGO_URI: ${{secrets.MONGO_URI}}
                 ACCESS_TOKEN: ${{secrets.ACCESS_TOKEN}}
                 REFRESH_TOKEN: ${{secrets.REFRESH_TOKEN}}

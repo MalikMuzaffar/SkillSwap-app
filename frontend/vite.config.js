@@ -14,12 +14,12 @@ export default defineConfig(({ mode }) => {
     server: {
       proxy: {
         '/users': {
-          target: env.VITE_BACKEND_URL, // from .env
+          target: env.VITE_BACKEND_URI, // from .env
           changeOrigin: true,
           secure: false,
         },
         '/socket.io': {
-          target: env.VITE_SOCKET_URL, // from .env
+          target: env.VITE_SOCKET_URI, // from .env
           ws: true,
           changeOrigin: true,
         },
