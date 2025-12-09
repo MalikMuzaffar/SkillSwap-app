@@ -15,7 +15,7 @@ services:
     image: muzaffaribrar/fyp-backend:latest
     ports:
       - "8000:8000"
-      - "3000:3000"  # Socket.IO port
+      # - "3000:3000"  # Socket.IO port
     depends_on:
       - mongo
     env_file:
