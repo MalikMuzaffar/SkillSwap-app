@@ -6,6 +6,7 @@ import { generateAccessTokenAndRefereshToken } from "../../../utils/generateToke
 export const loginUserController = async(req,res)=>{
   try{
 const {email,password}=req.body;
+console.log(req.body)
 if(!email && !password){
     throw new ApiError(401,{},"username or password required");
 }
