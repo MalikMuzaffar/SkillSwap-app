@@ -5,6 +5,11 @@ import axios from 'axios';
 
 axios.defaults.baseURL = import.meta.env.VITE_BACKEND_URI;
 
+
+console.log('======AUTH ENV===',import.meta.VITE_BACKEND_URI)
+console.log('======AUTH ENV VITE_SOCKET_URI ===',import.meta.VITE_SOCKET_URI)
+
+
 export const socket = io(import.meta.env.VITE_SOCKET_URI);
 
 // Create the AuthContext
