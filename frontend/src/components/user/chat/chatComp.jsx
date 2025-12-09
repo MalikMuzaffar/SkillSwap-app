@@ -807,7 +807,7 @@ import { Smile, Send, ArrowLeft, Paperclip, Download, Check, Loader2, MoreVertic
 import Picker from 'emoji-picker-react';
 import moment from 'moment';
 import { AuthContext } from '../../../context/authContext.jsx';
-import { socket } from '../../../socket.js'; // <-- use shared socket
+//import { socket } from '../../../socket.js'; // <-- use shared socket
 import toast from 'react-hot-toast';
 
 // Components & Utils
