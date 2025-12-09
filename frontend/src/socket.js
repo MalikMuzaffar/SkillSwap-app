@@ -6,9 +6,9 @@
 
 
 // socket.js
-import { io } from "socket.io-client";
+// import { io } from "socket.io-client";
 
-export const socket = io(import.meta.env.VITE_SOCKET_URI, {
-  transports: ["websocket"],
-  withCredentials: true,
-});
+// export const socket = io(import.meta.env.VITE_SOCKET_URI, {
+//   transports: ["websocket"],
+//   withCredentials: true,
+// });

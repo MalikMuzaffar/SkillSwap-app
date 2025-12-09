@@ -4,6 +4,7 @@ import { Bell, Check, Circle } from "lucide-react";
 import toast from "react-hot-toast";
 import LoaderComp from "../loader.jsx";
 import { AuthContext } from "../../context/authContext.jsx";
+//import { socket } from "../../socket.js";
 
 const NotificationComp = () => {
   const [notifications, setNotifications] = useState(null);

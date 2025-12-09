@@ -3,6 +3,9 @@ import axios from "axios";
 import { UploadCloud, ImagePlus } from "lucide-react";
 import { Socket } from "socket.io-client";
 import { socket } from "../../context/authContext";
+// Replace the old import
+//import { socket } from "../../socket.js";
+
 
 const AddSkill = () => {
   const [categories, setCategories] = useState([]);

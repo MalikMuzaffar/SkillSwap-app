@@ -4,6 +4,7 @@ import axios from 'axios';
 import { Star } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { AuthContext } from '../../context/authContext';
+//import { socket } from "../../socket.js";
 import LoaderComp from '../loader';
 
 const SkillComp = () => {

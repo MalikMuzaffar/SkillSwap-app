@@ -1,6 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../context/authContext'; // import your context
+// import { socket } from "../../socket.js";
 import axios from 'axios';
 
 const LoginComp = () => {

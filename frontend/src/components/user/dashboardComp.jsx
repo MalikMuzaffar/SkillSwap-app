@@ -1,5 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../../context/authContext';
+// Replace the old import
+//import { socket } from "../../socket.js";
 import { useNavigate } from 'react-router-dom';
 import { PlusCircle, Edit } from 'lucide-react';
 import axios from 'axios';

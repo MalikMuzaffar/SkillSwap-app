@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 import { Search, Star } from 'lucide-react';
 import { AuthContext } from '../../context/authContext';
+//import { socket } from "../../socket.js";
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import LoaderComp from '../loader';
