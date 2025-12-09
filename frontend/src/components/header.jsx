@@ -215,36 +215,79 @@ const Header = () => {
     });
   };
 
+
   const handleLogOut = async () => {
-    try {
-      const response = await axios.post("/users/logout", {}, {
-        withCredentials: true
-      });
-      clearUser();
-      if (response.data.success) {
-        toast.success("Logout Successful");
-       navigate('/')
+  try {
+    const response = await axios.post(
+      "/users/logout",
+      {},
+      {
+        withCredentials: true,
+        headers: {
+          Authorization: `Bearer ${user?.accessToken}` // optional if backend expects token
+        }
       }
-    } catch {
-      toast.error("Logout failed");
+    );
+    clearUser();
+    if (response.data.success) {
+      toast.success("Logout Successful");
+      navigate('/');
     }
-  };
+  } catch {
+    toast.error("Logout failed");
+  }
+};
+
+  //     OLD    CODE   BELOW
+  // const handleLogOut = async () => {
+  //   try {
+  //     const response = await axios.post("/users/logout", {}, {
+  //       withCredentials: true
+  //     });
+  //     clearUser();
+  //     if (response.data.success) {
+  //       toast.success("Logout Successful");
+  //      navigate('/')
+  //     }
+  //   } catch {
+  //     toast.error("Logout failed");
+  //   }
+  // };
 
   const toggleMobileMenu = () => setMobileMenuOpen(prev => !prev);
 
+
   useEffect(() => {
-    const fetchNotifications = async () => {
-      try {
-        const res = await axios.get(`/notification/${user?.user?._id}`, {
-          withCredentials: true
-        });
-        setNotifications(res.data.data.slice(0, 2));
-      } catch (err) {
-        console.error("Failed to fetch notifications", err);
-      }
-    };
-    if (user?.accessToken) fetchNotifications();
-  }, [user]);
+  const fetchNotifications = async () => {
+    try {
+      const res = await axios.get(`/notification/${user?.user?._id}`, {
+        withCredentials: true, // send cookies
+        headers: {
+          Authorization: `Bearer ${user?.accessToken}` // send token if backend expects it
+        }
+      });
+      setNotifications(res.data.data.slice(0, 2));
+    } catch (err) {
+      console.error("Failed to fetch notifications", err);
+    }
+  };
+  if (user?.accessToken) fetchNotifications();
+}, [user]);
+
+  // OLD  CODE 
+  // useEffect(() => {
+  //   const fetchNotifications = async () => {
+  //     try {
+  //       const res = await axios.get(`/notification/${user?.user?._id}`, {
+  //         withCredentials: true
+  //       });
+  //       setNotifications(res.data.data.slice(0, 2));
+  //     } catch (err) {
+  //       console.error("Failed to fetch notifications", err);
+  //     }
+  //   };
+  //   if (user?.accessToken) fetchNotifications();
+  // }, [user]);
 
   return (
     <header className="bg-[#0f172a] shadow-lg sticky top-0 z-50">
@@ -297,7 +340,7 @@ const Header = () => {
               <div className="relative cursor-pointer">
                 <img 
                   onClick={toggleProfileDropdown} 
-                  src={user.user.profileImage?.trim() ? user.user.profileImage : "/default-profile.png"} 
+                  src={user.user.profileImage?.trim() ? user.user.profileImage : "/default-profile.jpg"} 
                   alt="Profile" 
                   className="w-10 h-10 rounded-full border-2 border-indigo-500 hover:shadow-lg transition" 
                 />
