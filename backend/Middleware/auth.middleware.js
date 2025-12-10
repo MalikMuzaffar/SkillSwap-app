@@ -105,6 +105,128 @@ const verifyUser = async (req, res, next) => {
 export { verifyUser };
 
 
+
+
+//////////////////////          OLD       CODE           IS       ABOVE         ////////////////////////
+
+
+
+
+
+
+// src/middleware/verifyUser.js
+// import jwt from "jsonwebtoken";
+// import User from "../Models/user.model.js";
+// import { ApiError } from "../utils/ApiError.js";
+// import { generateAccessTokenAndRefereshToken } from "../utils/generateToken.js";
+
+// const verifyUser = async (req, res, next) => {
+//   try {
+//     // ✅ Get token from cookie or header
+//     const accessToken =
+//       req.cookies?.accessToken ||
+//       req.header("Authorization")?.replace("Bearer ", "");
+
+//     if (!accessToken) {
+//       throw new ApiError(401, {}, "Unauthorized: Access token missing");
+//     }
+
+//     let decoded;
+//     try {
+//       decoded = jwt.verify(accessToken, process.env.ACCESS_TOKEN);
+//     } catch (err) {
+//       // Access token expired → use refresh token
+//       const refreshToken = req.cookies?.refreshToken;
+//       if (!refreshToken) {
+//         throw new ApiError(403, {}, "Refresh token missing or expired");
+//       }
+
+//       const decodedRefresh = jwt.verify(refreshToken, process.env.REFRESH_TOKEN);
+//       const user = await User.findById(decodedRefresh._id);
+//       if (!user || refreshToken !== user.refreshToken) {
+//         throw new ApiError(403, {}, "Invalid refresh token or user not found");
+//       }
+
+//       // Refresh tokens
+//       user.isActive = true;
+//       user.lastActiveAt = new Date();
+
+//       const { accessToken: newAccessToken, refreshToken: newRefreshToken } =
+//         await generateAccessTokenAndRefereshToken(user._id);
+
+//       user.refreshToken = newRefreshToken;
+//       await user.save();
+
+//       const cookieOptions = {
+//         httpOnly: true,
+//         secure: process.env.NODE_ENV === "production",
+//         sameSite: "Lax",
+//       };
+
+//       res.cookie("accessToken", newAccessToken, cookieOptions);
+//       res.cookie("refreshToken", newRefreshToken, cookieOptions);
+
+//       req.user = user;
+//       return next();
+//     }
+
+//     // Access token is valid
+//     const user = await User.findById(decoded._id).select("-password -refreshToken");
+//     if (!user) {
+//       throw new ApiError(404, {}, "User not found");
+//     }
+
+//     // Inactivity check (2 hours)
+//     const TWO_HOURS = 2 * 60 * 60 * 1000;
+//     if (
+//       user.isActive &&
+//       user.lastActiveAt &&
+//       Date.now() - new Date(user.lastActiveAt).getTime() > TWO_HOURS
+//     ) {
+//       user.isActive = false;
+//       await user.save();
+//     }
+
+//     req.user = user;
+//     next();
+//   } catch (error) {
+//     console.error("verifyUser error:", error.message);
+
+//     // Only clear cookies if truly unauthorized
+//     if (error.statusCode === 401 || error.message.includes("Unauthorized")) {
+//       const cookieOptions = {
+//         httpOnly: true,
+//         secure: process.env.NODE_ENV === "production",
+//         sameSite: "Lax",
+//       };
+//       return res
+//         .status(401)
+//         .clearCookie("accessToken", cookieOptions)
+//         .clearCookie("refreshToken", cookieOptions)
+//         .json(new ApiError(401, {}, "Unauthorized: Please login again"));
+//     }
+
+//     // Other errors → just return error, don’t clear cookies
+//     res
+//       .status(error.statusCode || 500)
+//       .json(new ApiError(error.statusCode || 500, {}, error.message));
+//   }
+// };
+
+// export { verifyUser };
+
+
+
+
+
+
+
+
+
+
+
+
+
 // ////////////////////////        NEW       GPT        FILE          ////////////////
 // // middleware.js
 // import jwt from "jsonwebtoken";
