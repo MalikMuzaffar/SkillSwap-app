@@ -2,6 +2,7 @@ import React, { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/authContext";
 import toast, { Toaster } from "react-hot-toast";
+import axios from "axios";
 
 const RegisterComp = () => {
   const [formData, setFormData] = useState({
@@ -39,13 +40,11 @@ const RegisterComp = () => {
 
     try {
       setLoading(true);
-      const response = await fetch("/users/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ fullName, email, password }),
-      });
+      const response = await axios.post("/users/register", 
+      { fullName, email, password },
+      );
 
-      const data = await response.json();
+      const data = await response.data;
       setLoading(false);
 
       if (data.success) {
