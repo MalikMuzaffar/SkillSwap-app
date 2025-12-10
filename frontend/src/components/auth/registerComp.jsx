@@ -42,6 +42,9 @@ const RegisterComp = () => {
       setLoading(true);
       const response = await axios.post("/users/register", 
       { fullName, email, password },
+      {
+        headers: { "Content-Type": "application/json" }
+      }
       );
 
       const data = await response.data;
