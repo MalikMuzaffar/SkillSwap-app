@@ -55,10 +55,10 @@ const verifyUser = async (req, res, next) => {
 
       const options = {
         httpOnly: true,
-        //secure: false,      // must be false for HTTP
-        //sameSite: "Lax"     // allows cookies over HTTP
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "Strict",
+        secure: false,      // must be false for HTTP
+        sameSite: "Lax"     // allows cookies over HTTP
+        // secure: process.env.NODE_ENV === "production",
+        // sameSite: "Strict",
       };
 
       res.cookie("accessToken", newAccessToken, options);
