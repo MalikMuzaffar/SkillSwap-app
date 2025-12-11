@@ -27,36 +27,70 @@ const VerifyOtpComp = () => {
       return;
     }
 
+//     setLoading(true);
+//     try {
+//       const response = await axios.post(
+//   '/users/verify',
+//   { email: user.email, OTP: otp },
+//   {
+//     withCredentials: true, // Axios equivalent of 'credentials: include'
+//     headers: {
+//       'Content-Type': 'application/json'
+//     }
+//   }
+// );
+      
+//       const data = await response.json()
+   
+//       if (data.success) {
+        
+//         alert('OTP verified successfully!');
+//         updateUser({user:data.data.user,accessToken:data.data.accessToken})
+//         navigate('/explore')
+//       } else {
+//         alert(data.message || 'OTP verification failed.');
+//       }
+//     } catch (error) {
+//       console.error('Error during OTP verification:', error);
+//       alert('An error occurred. Please try again.');
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
+
+/////////////////////      OLD            CODE                     ABOVE                         ////////////////
     setLoading(true);
     try {
       const response = await axios.post(
-  '/users/verify',
-  { email: user.email, OTP: otp },
-  {
-    withCredentials: true, // Axios equivalent of 'credentials: include'
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  }
-);
-      
-      const data = await response.json()
-   
+        '/users/verify',
+        { email: user.email, OTP: otp },
+        {
+          withCredentials: true,
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }
+      );
+
+      const data = response.data;
+
       if (data.success) {
-        
         alert('OTP verified successfully!');
-        updateUser({user:data.data.user,accessToken:data.data.accessToken})
-        navigate('/explore')
+        updateUser({ user: data.data.user, accessToken: data.data.accessToken });
+        navigate('/explore');
       } else {
         alert(data.message || 'OTP verification failed.');
       }
+
     } catch (error) {
       console.error('Error during OTP verification:', error);
-      alert('An error occurred. Please try again.');
+      alert(error?.response?.data?.message || 'An error occurred. Please try again.');
     } finally {
       setLoading(false);
     }
   };
+
+//////////////////////////         NEW        GPT       CODE     ABOVE     FOR      OTP   VERIFICATION      ///////////
 
   const handleResend = async () => {
     if (!user || !user.email) {
