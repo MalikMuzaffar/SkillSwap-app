@@ -84,6 +84,16 @@ import http from "http";
 import { initSocket } from "./socketServer.js";
 import DbConn from "./db/DbConn.js";
 
+///////////////////     GPT CODE  BELOW  FOR  SHOWING METRICS TO   PROMETHEUS     /////////////
+
+import metricsRouter from "./metrics.js";
+
+// Keep this before other routes if possible
+app.use(metricsRouter);
+
+/////////////////////////////////////////////////                   GPT  CODE   ABOVE FEW LINES       ////////////
+
+
 // Load env
 dotenv.config({ path: "./.env" });
 
