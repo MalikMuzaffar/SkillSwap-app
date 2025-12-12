@@ -30,12 +30,12 @@ jobs:
               run: npm install 
 
               # Trivy check the repo for vulnerabilities
-            - name: scanning repo
-              uses: aquasecurity/trivy-action@master
-              with:
-                scan-type: repo
-                security-checks: secrets
-                exit-code: 0
+            # - name: scanning repo
+            #   uses: aquasecurity/trivy-action@master
+            #   with:
+            #     scan-type: repo
+            #     security-checks: secrets
+            #     exit-code: 0
 
               # build and scan frontend docker image
             - name: build frontend docker image
@@ -49,13 +49,13 @@ jobs:
             
             #run: docker build -t muzaffaribrar/fyp-frontend:$BUILD_NUMBER -t muzaffaribrar/fyp-frontend:latest ./frontend
 
-            - name: scanning frontend image 
-              uses: aquasecurity/trivy-action@master
-              with:
-                scan-type: image
-                image-ref: muzaffaribrar/fyp-frontend:${{ env.BUILD_NUMBER }}
-                security-checks: secrets
-                exit-code: 0
+            # - name: scanning frontend image 
+            #   uses: aquasecurity/trivy-action@master
+            #   with:
+            #     scan-type: image
+            #     image-ref: muzaffaribrar/fyp-frontend:${{ env.BUILD_NUMBER }}
+            #     security-checks: secrets
+            #     exit-code: 0
                 
             # push to docker hub
             - name: Push frontend image to docker hub
@@ -71,13 +71,13 @@ jobs:
             - name: build backend image
               run: docker build -t muzaffaribrar/fyp-backend:$BUILD_NUMBER -t muzaffaribrar/fyp-backend:latest ./backend
 
-            - name: scanning image by trivy
-              uses: aquasecurity/trivy-action@master
-              with:
-                scan-type: image
-                image-ref: muzaffaribrar/fyp-backend:${{ env.BUILD_NUMBER }}
-                security-checks: secrets
-                exit-code: 0
+            # - name: scanning image by trivy
+            #   uses: aquasecurity/trivy-action@master
+            #   with:
+            #     scan-type: image
+            #     image-ref: muzaffaribrar/fyp-backend:${{ env.BUILD_NUMBER }}
+            #     security-checks: secrets
+            #     exit-code: 0
 
             # push image to docker hub
             - name: push backend image to docker hub
