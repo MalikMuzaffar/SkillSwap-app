@@ -86,10 +86,10 @@ import DbConn from "./db/DbConn.js";
 
 ///////////////////     GPT CODE  BELOW  FOR  SHOWING METRICS TO   PROMETHEUS     /////////////
 
-import metricsRouter from "./metrics.js";
+
 
 // Keep this before other routes if possible
-app.use(metricsRouter);
+//app.use(metricsRouter);
 
 /////////////////////////////////////////////////                   GPT  CODE   ABOVE FEW LINES       ////////////
 
@@ -99,6 +99,19 @@ dotenv.config({ path: "./.env" });
 
 const app = express();
 const server = http.createServer(app);
+
+
+
+///////////////////     GPT CODE  BELOW  FOR  SHOWING METRICS TO   PROMETHEUS     /////////////
+
+//import metricsRouter from "./metrics.js";
+
+// Keep this before other routes if possible
+
+/////////////////////////////////////////////////                   GPT  CODE   ABOVE FEW LINES       ////////////
+
+
+
 
 // CORS
 app.use(cors({
@@ -121,6 +134,10 @@ import reviewRouter from "./Routes/review.routes.js";
 import adminRouter from "./Routes/admin.routes.js";
 import reportRouter from "./Routes/report.routes.js";
 import notificationRouter from "./Routes/notification.routes.js";
+////////////////////////////////////////////////
+//       FOR    METRICS     
+import metricsRouter from "./metrics.js";
+////////////////////////////////////////////////
 
 app.use('/message', chatRouter);
 app.use("/users", userRouter);
@@ -131,6 +148,12 @@ app.use('/review', reviewRouter);
 app.use('/admin', adminRouter);
 app.use('/report', reportRouter);
 app.use('/notification', notificationRouter);
+
+
+///////////////////////////////////////////////
+//       FOR METRICS
+app.use("/metrics", metricsRouter);
+//////////////////////////////////////////////
 
 // Connect to DB
 DbConn().then(() => {
