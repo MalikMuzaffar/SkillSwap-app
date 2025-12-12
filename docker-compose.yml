@@ -126,14 +126,14 @@ services:
       - cadvisor
 
   grafana:
-  image: grafana/grafana:latest
-  container_name: grafana
-  ports:
-    - "3000:3000"
-  volumes:
-    - ./grafana:/var/lib/grafana
-    - ./grafana.ini:/etc/grafana/grafana.ini
-  restart: unless-stopped
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./grafana:/var/lib/grafana
+      - ./grafana.ini:/etc/grafana/grafana.ini
+    restart: unless-stopped
 
 
 volumes:
