@@ -7,6 +7,60 @@ import { ApiResponse } from "../../utils/ApiResponse.js";
 import { uploadCloudinary } from "../../utils/cloudinary.js";
 
 
+// export const addSkillController = async (req, res, next) => {
+//   try {
+//     const {
+//       title,
+//       description,
+//       categoryId,
+//       tags,
+//       level,
+//       availability,
+//       location,
+//       mode,
+//     } = req.body;
+
+
+//     // ✅ Validate required fields
+//     if (!title || !categoryId || !mode) {
+//       throw new ApiError(400,{}, "Title, Category and Mode are required")
+//     }
+
+//     // ✅ Initialize variable for uploaded image URL
+
+//     let coverImageUrl = "";
+
+//     // ✅ Upload image if available
+//     const coverImage = req?.files?.coverImage?.[0];
+//     if (coverImage?.path) {
+//       const uploaded = await uploadCloudinary(coverImage.path, "skillswap/skills");
+//       coverImageUrl = uploaded.secure_url;
+//     }
+
+//     // ✅ Create skill
+//     const newSkill = await Skill.create({
+//       title,
+//       description,
+//       categoryId,
+//       tags: tags ? tags.split(",").map(tag => tag.trim()) : [],
+//       level,
+//       availability,
+//       location,
+//       isActive:true,
+//       mode,
+//       imagesUrl: coverImageUrl ? [coverImageUrl] : [],
+//       providerId: req.user._id, // assuming auth middleware adds user to req
+//     });
+
+
+//     return res.status(201).json(new ApiResponse(201,newSkill,"Skill Request successfully"))
+//   } catch (error) {
+//     console.error("Error in addSkillController:", error);
+//     return res.json(new ApiError(error.statusCode,error.error,error.message));
+//   }
+// };
+
+//////////////        NEW              CODE                BELOW           ///////////////////
 export const addSkillController = async (req, res, next) => {
   try {
     const {
@@ -20,24 +74,28 @@ export const addSkillController = async (req, res, next) => {
       mode,
     } = req.body;
 
-
-    // ✅ Validate required fields
+    // Required validation
     if (!title || !categoryId || !mode) {
-      throw new ApiError(400,{}, "Title, Category and Mode are required")
+      throw new ApiError(400, {}, "Title, Category and Mode are required");
     }
 
-    // ✅ Initialize variable for uploaded image URL
-
+    // Image upload handling
     let coverImageUrl = "";
 
-    // ✅ Upload image if available
     const coverImage = req?.files?.coverImage?.[0];
+
+    // Cloudinary upload
     if (coverImage?.path) {
-      const uploaded = await uploadCloudinary(coverImage.path, "skillswap/skills");
-      coverImageUrl = uploaded.secure_url;
+      const uploaded = await uploadCloudinary(
+        coverImage.path,
+        "skillswap/skills"
+      );
+
+      // uploaded → { secure_url, public_id, ... }
+      coverImageUrl = uploaded?.secure_url || "";
     }
 
-    // ✅ Create skill
+    // Create Skill
     const newSkill = await Skill.create({
       title,
       description,
@@ -46,20 +104,24 @@ export const addSkillController = async (req, res, next) => {
       level,
       availability,
       location,
-      isActive:true,
+      isActive: true,
       mode,
       imagesUrl: coverImageUrl ? [coverImageUrl] : [],
-      providerId: req.user._id, // assuming auth middleware adds user to req
+      providerId: req.user._id,
     });
 
-
-    return res.status(201).json(new ApiResponse(201,newSkill,"Skill Request successfully"))
+    return res
+      .status(201)
+      .json(new ApiResponse(201, newSkill, "Skill Request successfully"));
   } catch (error) {
     console.error("Error in addSkillController:", error);
-    return res.json(new ApiError(error.statusCode,error.error,error.message));
+    return res.json(
+      new ApiError(error.statusCode, error.error, error.message)
+    );
   }
 };
 
+/////////////////////////            GPT     CODE       ABOVE           //////////////////
 
 export const getUserSkillsController = async (req, res, next) => {
   try {

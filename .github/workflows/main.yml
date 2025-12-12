@@ -177,9 +177,9 @@ jobs:
                 PORT=8000
                 MONGO_URI=${MONGO_URI}
                 ACCESS_TOKEN=${ACCESS_TOKEN}
-                ACCESS_TOKEN_EXPIRY=5h
+                ACCESS_TOKEN_EXPIRY=1h
                 REFRESH_TOKEN=${REFRESH_TOKEN}
-                REFRESH_TOKEN_EXPIRY=12h
+                REFRESH_TOKEN_EXPIRY=7d
                 CLOUDINARY_NAME=${CLOUDINARY_NAME}
                 CLOUDINARY_KEY=${CLOUDINARY_KEY}
                 CLOUDINARY_SECRET=${CLOUDINARY_SECRET}

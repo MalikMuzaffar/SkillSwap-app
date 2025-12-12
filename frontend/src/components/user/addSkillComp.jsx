@@ -64,36 +64,77 @@ const AddSkill = () => {
       }
     }
 
+  //   try {
+  //     const res = await axios.post("/skill/add-skill", payload, {
+  //       headers: { "Content-Type": "multipart/form-data" },
+  //       withCredentials: true,
+  //     });
+
+  //     alert(res.data.message);
+  //     if (res.data.success) {
+  //       Socket.emit("create-room", res.data.skill._id);
+  //     }
+
+  //     setFormData({
+  //       title: "",
+  //       description: "",
+  //       categoryId: "",
+  //       tags: "",
+  //       level: "",
+  //       availability: "",
+  //       location: "",
+  //       mode: "",
+  //       coverImage: null,
+  //     });
+  //     setPreviewImage(null);
+  //   } catch (error) {
+  //     console.error("Add skill error:", error);
+  //     // alert("Failed to add skill");
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+
+
+
+  //////////         NEW        GPT         CODE       BELOW              /////////
+
+
     try {
-      const res = await axios.post("/skill/add-skill", payload, {
-        headers: { "Content-Type": "multipart/form-data" },
-        withCredentials: true,
-      });
+  const res = await axios.post("/skill/add-skill", payload, {
+    headers: { "Content-Type": "multipart/form-data" },
+    withCredentials: true,
+  });
 
-      alert(res.data.message);
-      if (res.data.success) {
-        Socket.emit("create-room", res.data.skill._id);
-      }
+  alert(res.data.message);
 
-      setFormData({
-        title: "",
-        description: "",
-        categoryId: "",
-        tags: "",
-        level: "",
-        availability: "",
-        location: "",
-        mode: "",
-        coverImage: null,
-      });
-      setPreviewImage(null);
-    } catch (error) {
-      console.error("Add skill error:", error);
-      // alert("Failed to add skill");
-    } finally {
-      setLoading(false);
-    }
+  // Fix here: use res.data.data instead of res.data.skill
+  if (res.data.statusCode === 201 && res.data.data) {
+    socket.emit("create-room", res.data.data._id);
+  }
+
+  setFormData({
+    title: "",
+    description: "",
+    categoryId: "",
+    tags: "",
+    level: "",
+    availability: "",
+    location: "",
+    mode: "",
+    coverImage: null,
+  });
+  setPreviewImage(null);
+} catch (error) {
+  console.error("Add skill error:", error);
+} finally {
+  setLoading(false);
+}
   };
+
+////////////////////          NEW       GPT            CODE      ABOVE            ////////////////
+
+
 
   return (
     <section className="min-h-screen py-20 px-4 bg-gradient-to-br from-indigo-50 to-purple-100">

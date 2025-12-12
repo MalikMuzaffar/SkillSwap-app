@@ -15,11 +15,11 @@ const developers = [
   },
   {
     name: "Muzaffar Ibrar",
-    role: "Frontend Developer",
+    role: "Frontend Developer + DevOps Engineer",
     image: muzaffar,
-    bio: "Muzaffar loves solving frontend challenges and designing user interfaces for robust web systems.",
-    github: "https://github.com/muzaffar",
-    linkedin: "https://www.linkedin.com/in/bilalkhan",
+    bio: "Muzaffar loves solving frontend challenges and designing user interfaces for robust web systems. And also working as DevOps Engineer.",
+    github: "https://github.com/MalikMuzaffar",
+    linkedin: "https://www.linkedin.com/in/muzaffar-ibrar-13a692302",
   },
 ];
 
