@@ -37,6 +37,13 @@ jobs:
             #     security-checks: secrets
             #     exit-code: 0
 
+              # To clear the cache so every time i changed the IP it fetch it from github secret
+
+            - name: Clear Vite cache
+              run: |
+                rm -rf node_modules/.vite
+                rm -rf dist
+
               # build and scan frontend docker image
             - name: build frontend docker image
               run: |
@@ -95,8 +102,8 @@ jobs:
                 env:
                 DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
                 DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-                VITE_BACKEND_URI: "http://${{secrets.EC2_IP}}:8000"
-                VITE_SOCKET_URI: "http://${{secrets.EC2_IP}}:8000"
+                # VITE_BACKEND_URI: "http://${{secrets.EC2_IP}}:8000"
+                # VITE_SOCKET_URI: "http://${{secrets.EC2_IP}}:8000"
                 MONGO_URI: ${{secrets.MONGO_URI}}
                 ACCESS_TOKEN: ${{secrets.ACCESS_TOKEN}}
                 REFRESH_TOKEN: ${{secrets.REFRESH_TOKEN}}
