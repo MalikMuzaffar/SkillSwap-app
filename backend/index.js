@@ -84,14 +84,6 @@ import http from "http";
 import { initSocket } from "./socketServer.js";
 import DbConn from "./db/DbConn.js";
 
-///////////////////     GPT CODE  BELOW  FOR  SHOWING METRICS TO   PROMETHEUS     /////////////
-
-
-
-// Keep this before other routes if possible
-//app.use(metricsRouter);
-
-/////////////////////////////////////////////////                   GPT  CODE   ABOVE FEW LINES       ////////////
 
 
 // Load env
@@ -99,19 +91,6 @@ dotenv.config({ path: "./.env" });
 
 const app = express();
 const server = http.createServer(app);
-
-
-
-///////////////////     GPT CODE  BELOW  FOR  SHOWING METRICS TO   PROMETHEUS     /////////////
-
-//import metricsRouter from "./metrics.js";
-
-// Keep this before other routes if possible
-
-/////////////////////////////////////////////////                   GPT  CODE   ABOVE FEW LINES       ////////////
-
-
-
 
 // CORS
 app.use(cors({
