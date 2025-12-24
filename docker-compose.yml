@@ -141,7 +141,7 @@ services:
       - "3000:3000"
     volumes:
       - ~/FYP/grafana:/var/lib/grafana
-      - ~/FYP/grafana.ini:/etc/grafana/grafana.ini
+      # - ~/FYP/grafana.ini:/etc/grafana/grafana.ini
     restart: unless-stopped
 
 
