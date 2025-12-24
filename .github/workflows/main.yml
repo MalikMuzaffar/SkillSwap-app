@@ -103,8 +103,6 @@ jobs:
                 env:
                 DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
                 DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-                # VITE_BACKEND_URI: "http://${{secrets.EC2_IP}}:8000"
-                # VITE_SOCKET_URI: "http://${{secrets.EC2_IP}}:8000"
                 MONGO_URI: ${{secrets.MONGO_URI}}
                 ACCESS_TOKEN: ${{secrets.ACCESS_TOKEN}}
                 REFRESH_TOKEN: ${{secrets.REFRESH_TOKEN}}
@@ -122,57 +120,6 @@ jobs:
 
                 # ssh and copy docker compose to ec2 
                 scp -o StrictHostKeyChecking=no -i key.pem ./docker-compose.yml ubuntu@"$EC2_IP":/home/ubuntu/FYP/docker-compose.yml
-
-                # ssh -o StrictHostKeychecking=no -i key.pem ubuntu@"$EC2_IP" << EOF
-
-                # # inside the FYP/frontend place env
-                # cd /home/ubuntu/FYP
-                # mkdir frontend
-
-                # cat <<EOF > frontend/.env
-                # VITE_BACKEND_URI=${VITE_BACKEND_URI}
-                # VITE_SOCKET_URI=${VITE_SOCKET_URI}
-                # EOF
-                # chmod 600 frontend/.env
-
-                # EOF
-
-                # ssh -o StrictHostKeychecking=no -i key.pem ubuntu@"$EC2_IP" << EOF
-
-                # # inside the FYP/backend place env
-                # cd /home/ubuntu/FYP
-                # mkdir backend
-
-                # cat <<EOF > backend/.env
-                # PORT=8000
-                # MONGO_URI=${MONGO_URI}
-                # ACCESS_TOKEN=${ACCESS_TOKEN}
-                # ACCESS_TOKEN_EXPIRY=5h
-                # REFRESH_TOKEN=${REFRESH_TOKEN}
-                # REFRESH_TOKEN_EXPIRY=12h
-                # CLOUDINARY_NAME=${CLOUDINARY_NAME}
-                # CLOUDINARY_KEY=${CLOUDINARY_KEY}
-                # CLOUDINARY_SECRET=${CLOUDINARY_SECRET}
-                # SMTP_USER=${SMTP_USER}
-                # SMTP_PASS=${SMTP_PASS}
-                # FRONTEND_URL=${FRONTEND_URL}
-                # EOF
-                # chmod 600 backend/.env
-
-                # EOF 
-
-                # ssh -o StrictHostKeyChecking=no -i key.pem ubuntu@"$EC2_IP" <<'ENDSSH'
-                # cd /home/ubuntu/FYP
-                # mkdir -p frontend
-                # ENDSSH
-
-                # ssh -o StrictHostKeyChecking=no -i key.pem ubuntu@"$EC2_IP" <<EOF
-                # cat > /home/ubuntu/FYP/frontend/.env <<EOT
-                # VITE_BACKEND_URI=${VITE_BACKEND_URI}
-                # VITE_SOCKET_URI=${VITE_SOCKET_URI}
-                # EOT
-                # chmod 600 /home/ubuntu/FYP/frontend/.env
-                # EOF
                 
                 #CREATING BACKEND .ENV INSIDE /BACKEND
                 ssh -o StrictHostKeyChecking=no -i key.pem ubuntu@"$EC2_IP" <<'ENDSSH'

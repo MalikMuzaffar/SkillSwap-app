@@ -115,7 +115,10 @@ import reportRouter from "./Routes/report.routes.js";
 import notificationRouter from "./Routes/notification.routes.js";
 ////////////////////////////////////////////////
 //       FOR    METRICS     
-import metricsRouter from "./metrics.js";
+//import metricsRouter from "./metrics.js";
+
+//import bodyParser from 'body-parser';
+import register, {  updateSystemMetrics} from './metrics.js';
 ////////////////////////////////////////////////
 
 app.use('/message', chatRouter);
@@ -131,7 +134,18 @@ app.use('/notification', notificationRouter);
 
 ///////////////////////////////////////////////
 //       FOR METRICS
-app.use("/metrics", metricsRouter);
+//app.use("/metrics", metricsRouter);
+app.get('/metrics', async (req, res) => {
+    console.log("In metrics");
+  try {
+    updateSystemMetrics(); // update CPU & memory before scrape
+    res.set('Content-Type', register.contentType);
+    res.end(await register.metrics()); // now Prometheus will see updated values
+  } catch (err) {
+    res.status(500).send('Error collecting metrics');
+  }
+});
+
 //////////////////////////////////////////////
 
 // Connect to DB
