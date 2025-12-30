@@ -65,7 +65,7 @@ jobs:
             #     security-checks: secrets
             #     exit-code: 0
                 
-            # push to docker hub
+            # push to dockerHub 
             - name: Push frontend image to docker hub
               env:
                 DOCKER_USERNAME: ${{secrets.DOCKER_USERNAME}}
