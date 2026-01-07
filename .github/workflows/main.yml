@@ -38,8 +38,8 @@ jobs:
       - name: Build frontend Docker image
         run: |
           docker build --no-cache \
-            --build-arg VITE_BACKEND_URI="http://${{ secrets.EC2_IP }}" \
-            --build-arg VITE_SOCKET_URI="http://${{ secrets.EC2_IP }}" \
+            --build-arg VITE_BACKEND_URI="http://${{ secrets.EC2_IP }}/api" \
+            --build-arg VITE_SOCKET_URI="http://${{ secrets.EC2_IP }}/api" \
             -t muzaffaribrar/fyp-frontend:$BUILD_NUMBER \
             -t muzaffaribrar/fyp-frontend:latest \
             ./frontend
