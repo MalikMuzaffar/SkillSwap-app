@@ -83,8 +83,8 @@ jobs:
 
           # Copy docker compose + monitoring + nginx
           scp -o StrictHostKeyChecking=no -i key.pem ./docker-compose.yml ubuntu@$EC2_IP:/home/ubuntu/FYP/docker-compose.yml
-          scp -o StrictHostKeyChecking=no -i key.pem -r ./monitoring ubuntu@$EC2_IP:/home/ubuntu/FYP/
-          scp -o StrictHostKeyChecking=no -i key.pem -r ./nginx ubuntu@$EC2_IP:/home/ubuntu/FYP/
+          #scp -o StrictHostKeyChecking=no -i key.pem -r ./monitoring ubuntu@$EC2_IP:/home/ubuntu/FYP/
+          #scp -o StrictHostKeyChecking=no -i key.pem -r ./nginx ubuntu@$EC2_IP:/home/ubuntu/FYP/
 
           # Create backend .env on EC2
           ssh -o StrictHostKeyChecking=no -i key.pem ubuntu@$EC2_IP << EOF
