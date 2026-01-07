@@ -39,7 +39,7 @@ jobs:
         run: |
           docker build --no-cache \
             --build-arg VITE_BACKEND_URI="http://${{ secrets.EC2_IP }}/api" \
-            --build-arg VITE_SOCKET_URI="http://${{ secrets.EC2_IP }}/api" \
+            --build-arg VITE_SOCKET_URI="http://${{ secrets.EC2_IP }}/socket.io" \
             -t muzaffaribrar/fyp-frontend:$BUILD_NUMBER \
             -t muzaffaribrar/fyp-frontend:latest \
             ./frontend
