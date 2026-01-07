@@ -1,110 +1,83 @@
-# version: '3.9'
-# services:
+version: "3.9"
 
-#   frontend:
-#     image: muzaffaribrar/fyp-frontend:latest
-#     ports:
-#       - "5173:80"
-#     depends_on:
-#       - backend
-#     # env_file:
-#     #   - ./frontend/.env
-#     restart: unless-stopped
+networks:
+  fyp-net:
 
-#   backend:
-#     image: muzaffaribrar/fyp-backend:latest
-#     ports:
-#       - "8000:8000"
-#       # - "3000:3000"  # Socket.IO port
-#     depends_on:
-#       - mongo
-#     env_file:
-#       - ./backend/.env
-#     restart: unless-stopped
-
-#   # socketio:
-#   #   build: ./backend             # Assuming socketServer.js is in backend folder
-#   #   command: node socketServer.js
-#   #   ports:
-#   #     - "3000:3000"             # Host:Container
-#   #   env_file:
-#   #     - ./backend/.env
-#   #   depends_on:
-#   #     - backend
-#   #   restart: unless-stopped
-
-#   mongo:
-#     image: mongo:7.0
-#     ports:
-#       - "27017:27017"
-#     volumes:
-#       - mongo-data:/data/db
-#     restart: unless-stopped
-
-# volumes:
-#   mongo-data:
-
-
-#######################           NEW       GPT            CODE         BELOW                     ################          
-version: '3.9'
+volumes:
+  mongo-data:
+  prometheus-data:
+  grafana-data:
 
 services:
 
-  frontend:
-    image: muzaffaribrar/fyp-frontend:latest
+  nginx:
+    image: nginx:latest
+    container_name: nginx
     ports:
-      - "5173:80"
+      - "80:80"
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
     depends_on:
+      - frontend
       - backend
     restart: unless-stopped
+    networks:
+      - fyp-net
+
+  frontend:
+    image: muzaffaribrar/fyp-frontend:latest
+    container_name: frontend
+    expose:
+      - "80"
+    restart: unless-stopped
+    networks:
+      - fyp-net
 
   backend:
     image: muzaffaribrar/fyp-backend:latest
-    ports:
-      - "8000:8000"
+    container_name: backend
+    expose:
+      - "8000"
     depends_on:
       - mongo
     env_file:
       - ./backend/.env
     restart: unless-stopped
+    networks:
+      - fyp-net
 
   mongo:
     image: mongo:7.0
-    ports:
-      - "27017:27017"
+    container_name: mongo
+    restart: unless-stopped
     volumes:
       - mongo-data:/data/db
-    restart: unless-stopped
+    networks:
+      - fyp-net
 
-  # Node Exporter for backend host metrics
   node-exporter:
     image: prom/node-exporter:latest
     container_name: node-exporter
     ports:
       - "9100:9100"
-    restart: unless-stopped
-    # You can optionally mount /proc /sys for full host metrics:
+    networks:
+      - fyp-net
     volumes:
       - /proc:/host/proc:ro
       - /sys:/host/sys:ro
       - /:/rootfs:ro
-    # command:
-    #   - '--path.procfs=/host/proc'
-    #   - '--path.sysfs=/host/sys'
-    #   - '--collector.filesystem.ignored-mount-points="^/(sys|proc|dev|host|etc)($|/)"'
     command:
-    - '--path.procfs=/host/proc'
-    - '--path.sysfs=/host/sys'
-    #- --collector.filesystem.ignored-mount-points=^/(sys|proc|dev|host|etc)(\\$|/)
+      - '--path.procfs=/host/proc'
+      - '--path.sysfs=/host/sys'
+    restart: unless-stopped
 
-
-
-  # cAdvisor for monitoring all Docker containers
   cadvisor:
     image: gcr.io/cadvisor/cadvisor:latest
     container_name: cadvisor
     ports:
       - "8080:8080"
+    networks:
+      - fyp-net
     volumes:
       - /:/rootfs:ro
       - /var/run:/var/run:ro
@@ -117,36 +90,23 @@ services:
     container_name: prometheus
     ports:
       - "9090:9090"
+    networks:
+      - fyp-net
     volumes:
-      - ~/monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
+      - /home/ubuntu/FYP/monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
       - prometheus-data:/prometheus
-    restart: unless-stopped
     depends_on:
       - node-exporter
       - cadvisor
+    restart: unless-stopped
 
-  # grafana:
-  #   image: grafana/grafana:latest
-  #   container_name: grafana
-  #   ports:
-  #     - "3000:3000"
-  #   volumes:
-  #     - ./grafana:/var/lib/grafana
-  #     - ./grafana.ini:/etc/grafana/grafana.ini
-  #   restart: unless-stopped
   grafana:
     image: grafana/grafana:latest
     container_name: grafana
     ports:
       - "3000:3000"
-    #volumes:
-      #- ~/FYP/grafana:/var/lib/grafana
-      # - ~/FYP/grafana.ini:/etc/grafana/grafana.ini
+    networks:
+      - fyp-net
+    volumes:
+      - grafana-data:/var/lib/grafana
     restart: unless-stopped
-
-
-
-volumes:
-  mongo-data:
-  prometheus-data:
-  grafana-data:
