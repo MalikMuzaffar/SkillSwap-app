@@ -108,7 +108,7 @@ jobs:
           ssh -o StrictHostKeyChecking=no -i key.pem ubuntu@$EC2_IP << EOF
           cd /home/ubuntu/FYP
           echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-          docker-compose pull
-          docker-compose down
-          docker-compose up -d
+          docker compose pull
+          docker compose down
+          docker compose up -d
           EOF
