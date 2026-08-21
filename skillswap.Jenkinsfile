@@ -26,38 +26,6 @@ pipeline {
             }
         }
 
-        stage('Install Dependencies') {
-            parallel {
-                stage('Frontend Deps') {
-                    when {
-                        anyOf {
-                            changeset "frontend/**"
-                            expression { return env.BUILD_NUMBER == '1' }  // always run on first build, nothing to diff against yet
-                        }
-                    }
-                    steps {
-                        dir('frontend') {
-                            sh 'npm install'
-                            sh 'rm -rf node_modules/.vite dist'   // clear vite cache
-                        }
-                    }
-                }
-                stage('Backend Deps') {
-                    when {
-                        anyOf {
-                            changeset "backend/**"
-                            expression { return env.BUILD_NUMBER == '1' }
-                        }
-                    }
-                    steps {
-                        dir('backend') {
-                            sh 'npm install'
-                        }
-                    }
-                }
-            }
-        }
-
         stage('Build Images') {
             parallel {
                 stage('Build Frontend Image') {
