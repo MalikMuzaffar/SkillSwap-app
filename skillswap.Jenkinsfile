@@ -68,18 +68,17 @@ pipeline {
                         }
                     }
                     steps {
-                        withCredentials([string(credentialsId: EC2_HOST_CREDENTIALS, variable: 'EC2_IP')]) {
-                            script {
-                                frontendImage = docker.build(
-                                    "${FRONTEND_IMAGE}:${IMAGE_TAG}",
-                                    "--no-cache " +
-                                    "--build-arg VITE_BACKEND_URI=http://${EC2_IP}/api " +
-                                    "--build-arg VITE_SOCKET_URI=http://${EC2_IP}/socket.io " +
-                                    "./frontend"
-                                )
-                            }
-                        }
+                      script {
+            		frontendImage = docker.build(
+                	"${FRONTEND_IMAGE}:${IMAGE_TAG}",
+                	"--no-cache " +
+                	"--build-arg VITE_BACKEND_URI=/api " +
+                	"--build-arg VITE_SOCKET_URI=/socket.io " +
+                	"./frontend"
+            		)
+        	      }
                     }
+                  }
                 }
                 stage('Build Backend Image') {
                     when {
