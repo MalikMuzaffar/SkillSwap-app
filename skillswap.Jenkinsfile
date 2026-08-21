@@ -94,7 +94,7 @@ pipeline {
                     }
                 }
             }
-        }
+        
 
         stage('Push Images') {
             when { branch 'main' }
