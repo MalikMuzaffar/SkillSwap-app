@@ -1,4 +1,4 @@
-FROM node:latest AS build
+FROM node:18-alpine AS build
 
 WORKDIR /FYP
 
@@ -8,7 +8,6 @@ RUN npm install
 
 COPY . .
 
-# Pass build args with defaults
 ARG VITE_BACKEND_URI=/api
 ARG VITE_SOCKET_URI=/socket.io
 
@@ -17,10 +16,9 @@ ENV VITE_SOCKET_URI=$VITE_SOCKET_URI
 
 RUN npm run build
 
-# stage 2
-FROM nginx:latest
+# Stage 2
+FROM nginx:alpine
 
-# Fixed leading slash /usr/share/nginx/html
 COPY --from=build /FYP/dist /usr/share/nginx/html
 
 EXPOSE 80
