@@ -79,7 +79,7 @@ pipeline {
         	      }
                     }
                   }
-                }
+                
                 stage('Build Backend Image') {
                     when {
                         anyOf {
@@ -94,6 +94,7 @@ pipeline {
                     }
                 }
             }
+        }
         
 
         stage('Push Images') {
