@@ -19,6 +19,9 @@ RUN npm run build
 # Stage 2
 FROM nginx:alpine
 
+# Copy custom Nginx configuration
+COPY ./nginx/default.conf /etc/nginx/conf.d/default.conf
+
 COPY --from=build /FYP/dist /usr/share/nginx/html
 
 EXPOSE 80
